@@ -1,0 +1,9 @@
+{
+  "id": "mcalendar",
+  "name": "MCalendar",
+  "version": "0.1.0",
+  "minAppVersion": "1.5.0",
+  "description": "Lightweight Jalali calendar with daily, weekly, monthly and yearly notes.",
+  "author": "Mostafa",
+  "isDesktopOnly": true
+}

@@ -1,0 +1,154 @@
+/* MCalendar: minimal month grid. Tweak the --mcal-* variables to restyle. */
+
+.view-content.mcal {
+  padding: var(--size-4-2) var(--size-4-3);
+  container-type: inline-size; /* lets sizes below follow the sidebar width (cqw) */
+  user-select: none;
+
+  --mcal-text: var(--text-muted); /* day without a note */
+  --mcal-text-note: var(--text-normal); /* day with a note */
+  --mcal-holiday: color-mix(in srgb, var(--color-red) 60%, transparent);
+  --mcal-holiday-note: var(--color-red);
+}
+
+.theme-dark .view-content.mcal {
+  --mcal-text-note: #fff;
+}
+
+/* ---------- header ---------- */
+
+.mcal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--size-4-3);
+}
+
+.mcal-nav {
+  display: flex;
+  gap: 2px;
+}
+
+.mcal-button {
+  color: var(--text-faint);
+}
+
+.mcal-button:hover {
+  color: var(--text-normal);
+}
+
+.mcal-title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35em;
+  font-size: var(--font-ui-large);
+  font-weight: 600;
+}
+
+.mcal-month,
+.mcal-year {
+  cursor: pointer;
+}
+
+.mcal-month:hover,
+.mcal-year:hover {
+  opacity: 0.75;
+}
+
+.mcal-year {
+  color: var(--interactive-accent);
+}
+
+/* ---------- grid ---------- */
+
+.mcal-grid {
+  /* The week column has its own fixed track and is never hidden or clipped:
+     only the seven day columns shrink when the sidebar gets narrow. */
+  --mcal-week-col: clamp(1.6rem, 9cqw, 2.2rem);
+  --mcal-circle: clamp(1.25rem, 10cqw, 2rem);
+
+  display: grid;
+  grid-template-columns: var(--mcal-week-col) repeat(7, minmax(0, 1fr));
+  font-variant-numeric: tabular-nums;
+}
+
+.mcal-label {
+  padding-bottom: var(--size-4-2);
+  text-align: center;
+  font-size: clamp(0.6rem, 3.2cqw, 0.8rem);
+  font-weight: 600;
+  color: var(--text-faint);
+}
+
+.mcal-week {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--mcal-week-col);
+  font-size: clamp(0.65rem, 3.4cqw, 0.85rem);
+  color: var(--text-faint);
+  border-right: 1px solid var(--background-modifier-border);
+  cursor: pointer;
+}
+
+.mcal-week.mcal-has-note {
+  color: var(--text-normal);
+  font-weight: 600;
+}
+
+.mcal-week:hover {
+  color: var(--text-normal);
+}
+
+/* ---------- days ---------- */
+
+.mcal-day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 0;
+  color: var(--mcal-text);
+  cursor: pointer;
+}
+
+.mcal-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--mcal-circle);
+  height: var(--mcal-circle);
+  border-radius: 50%;
+  font-size: clamp(0.7rem, 4cqw, 0.95rem);
+}
+
+.mcal-day:hover .mcal-num {
+  background: var(--background-modifier-hover);
+}
+
+.mcal-day.mcal-has-note {
+  color: var(--mcal-text-note);
+  font-weight: 600;
+}
+
+.mcal-day.mcal-holiday {
+  color: var(--mcal-holiday);
+}
+
+.mcal-day.mcal-holiday.mcal-has-note {
+  color: var(--mcal-holiday-note);
+}
+
+.mcal-day.mcal-outside {
+  opacity: 0.4;
+}
+
+.mcal-day.mcal-today .mcal-num {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+}
+
+/* ---------- settings tab ---------- */
+
+input.mcal-invalid {
+  border-color: var(--text-error);
+}
