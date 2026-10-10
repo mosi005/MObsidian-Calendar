@@ -6,6 +6,7 @@ import { buildMonthGrid } from "./grid";
 import { fromDate } from "./jalali";
 import type { NoteService } from "./notes";
 import type { NoteTarget } from "./paths";
+import type { MCalendarSettings } from "./settings";
 
 export const VIEW_TYPE = "mcalendar-view";
 
@@ -27,13 +28,19 @@ const WEEKDAY_LABELS = ["S", "S", "M", "T", "W", "T", "F"]; // Saturday first
 
 export class CalendarView extends ItemView {
   private notes: NoteService;
+  private getSettings: () => MCalendarSettings;
   private jy: number; // month currently shown
   private jm: number;
   private todayKey = "";
 
-  constructor(leaf: WorkspaceLeaf, notes: NoteService) {
+  constructor(
+    leaf: WorkspaceLeaf,
+    notes: NoteService,
+    getSettings: () => MCalendarSettings,
+  ) {
     super(leaf);
     this.notes = notes;
+    this.getSettings = getSettings;
     const today = fromDate(new Date());
     this.jy = today.jy;
     this.jm = today.jm;
@@ -133,7 +140,10 @@ export class CalendarView extends ItemView {
     root: HTMLElement,
     today: { jy: number; jm: number; jd: number },
   ): void {
-    const grid = root.createDiv({ cls: "mcal-grid" });
+    const grid = root.createDiv({
+      cls: "mcal-grid",
+      attr: { dir: this.getSettings().direction },
+    });
 
     grid.createDiv({ cls: "mcal-label mcal-label--week", text: "W" });
     for (const label of WEEKDAY_LABELS)

@@ -14,7 +14,10 @@ export default class MCalendarPlugin extends Plugin {
     await this.loadSettings();
     this.notes = new NoteService(this.app, () => this.settings);
 
-    this.registerView(VIEW_TYPE, (leaf) => new CalendarView(leaf, this.notes));
+    this.registerView(
+      VIEW_TYPE,
+      (leaf) => new CalendarView(leaf, this.notes, () => this.settings),
+    );
     this.addRibbonIcon("calendar", "Open MCalendar", () => {
       void this.activateView();
     });

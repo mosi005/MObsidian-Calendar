@@ -8,6 +8,7 @@ import {
   TFolder,
 } from "obsidian";
 import type { App } from "obsidian";
+import { askToCreate } from "./confirm";
 import { toVaultPath } from "./format";
 import { notePath } from "./paths";
 import type { NoteTarget } from "./paths";
@@ -46,6 +47,15 @@ export class NoteService {
       const existing = this.app.vault.getAbstractFileByPath(path);
       if (existing instanceof TFolder)
         throw new Error(`A folder already exists at "${path}"`);
+      if (!(existing instanceof TFile) && this.getSettings().confirmCreate) {
+        if (
+          !(await askToCreate(
+            this.app,
+            `Create ${target.kind} note "${path}"?`,
+          ))
+        )
+          return;
+      }
       const file =
         existing instanceof TFile ? existing : await this.create(path, target);
       await this.open(file);
